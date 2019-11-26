@@ -119,7 +119,7 @@ namespace KTnNE_Bot
             }else if(colors.Count(x => x.Contains("yellow")) == 1 && colors.Count(x => x.Contains("white")) > 1)
             {
                 TextSynthesizer.Speak("fourth wire");
-            }else if(colors.Count(x => x.Contains("yellow")) == 0)
+            }else if(colors.Count(x => x.Contains("red")) == 0)
             {
                 TextSynthesizer.Speak("last wire");
             }

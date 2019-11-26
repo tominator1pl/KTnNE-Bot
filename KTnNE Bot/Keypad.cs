@@ -11,16 +11,16 @@ namespace KTnNE_Bot
         {
             columns = new Dictionary<int, List<string>>();
             TextSynthesizer.Speak("keypad ok sequence"); //sequence check keypad chars.png
-            GoogleSpeech.SetContext(new List<string> { "quebec", "alfa", "alpha", "lamp", "potter", "aliens", "hotel","delta","echo","six","papa","wave","empty","full","question","copyright","whiskey","bravo","x-ray","romeo","face","three","free","charlie","puzzle","letter","candlebra","november","omega" });
+            GoogleSpeech.SetContext(new List<string> { "quebec", "alfa", "alpha", "lamp", "potter", "aliens", "hotel","delta","echo","six","papa","wave","empty","full","question","copy","whiskey","bravo","x-ray","romeo","face","three","free","charlie","puzzle","letter","candle","november","omega" });
 
             columns[0] = new List<string> { "quebec", "alfa", "lamp", "potter", "aliens", "hotel", "delta" };
             columns[1] = new List<string> { "echo", "quebec", "delta", "wave", "empty", "hotel", "question" };
-            columns[2] = new List<string> { "copyright", "whiskey", "wave", "x-ray", "romeo", "lamp", "empty" };
+            columns[2] = new List<string> { "copy", "whiskey", "wave", "x-ray", "romeo", "lamp", "empty" };
             columns[3] = new List<string> { "six", "papa", "bravo", "aliens", "x-ray", "question", "face" };
-            columns[4] = new List<string> { "candlebra", "face", "bravo", "charlie", "papa", "three", "full" };
-            columns[5] = new List<string> { "six", "echo", "puzzle", "letter", "candlebra", "november", "omega" };
-            columns[6] = new List<string> { "quebec", "alpha", "lambda", "potter", "alien", "hotel", "delta" }; //variants speech
-            columns[7] = new List<string> { "candlebra", "face", "bravo", "charlie", "papa", "free", "full" };
+            columns[4] = new List<string> { "candle", "face", "bravo", "charlie", "papa", "three", "full" };
+            columns[5] = new List<string> { "six", "echo", "puzzle", "letter", "candle", "november", "omega" };
+            columns[6] = new List<string> { "quebec", "alpha", "lamp", "potter", "aliens", "hotel", "delta" }; //variants speech
+            columns[7] = new List<string> { "candle", "face", "bravo", "charlie", "papa", "free", "full" };
         }
         public override void Interpret(string text)
         {
