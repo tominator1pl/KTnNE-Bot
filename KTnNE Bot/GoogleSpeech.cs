@@ -49,8 +49,7 @@ namespace KTnNE_Bot
 
         public string Recognize()
         {
-
-            if (longerAudioList.Count == 0) return "ERROR";
+            if (longerAudioList.Count < 3200) return "ERROR";
             RecognitionAudio audio5 = RecognitionAudio.FromBytes(longerAudioList.ToArray());
             RecognizeResponse response = client.Recognize(config, audio5);
             Console.WriteLine(response);

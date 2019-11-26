@@ -12,6 +12,7 @@ namespace KTnNE_Bot
         Module currentModule;
         public static Dictionary<string, bool> labels;
         public static int batteries = 0;
+        public static string serialNumber;
 
         public enum Modes {
             start = 0,
@@ -23,30 +24,32 @@ namespace KTnNE_Bot
         public Interpreter()
         {
             labels = new Dictionary<string, bool>();
-            GoogleSpeech.SetContext(new List<string>{"simple button","simple wires","bomb check", "new bomb"});
+            GoogleSpeech.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb"});
         }
 
         public static void IdleBomb()
         {
             mode = Modes.start;
-            GoogleSpeech.SetContext(new List<string> { "simple button", "simple wires", "bomb check", "new bomb" });
+            GoogleSpeech.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb" });
         }
 
         internal void Interpret(string response)
         {
+            response = response.ToLower();
             switch (mode)
             {
                 case Modes.start:
-                    switch (response.ToLower())
+                    switch (response)
                     {
                         case "simple button":
                             mode = Modes.module;
                             currentModule = new SimpleButton();
                             break;
                         case "simple wires":
-                            TextSynthesizer.Speak("wires ok");
+                            mode = Modes.module;
+                            currentModule = new SimpleWires();
                             break;
-                        case "bomb check":
+                        case "bomb setup":
                             mode = Modes.module;
                             currentModule = new BombCheck();
                             break;

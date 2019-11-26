@@ -23,7 +23,6 @@ namespace KTnNE_Bot
 
         public override void Interpret(string text)
         {
-            text = text.ToLower();
             if(colorlabel)
             {
                 if (colorb)
@@ -32,7 +31,7 @@ namespace KTnNE_Bot
                     {
                         color = text;
                         colorb = false;
-                        TextSynthesizer.Speak("ok");
+                        TextSynthesizer.Speak("ok label");
                     }
                     else
                     {
