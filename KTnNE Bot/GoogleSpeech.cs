@@ -36,6 +36,8 @@ namespace KTnNE_Bot
                 LanguageCode = LanguageCodes.English.UnitedStates,
                 Model = "command_and_search"
             };
+            config.Metadata = new RecognitionMetadata();
+            config.Metadata.InteractionType = RecognitionMetadata.Types.InteractionType.VoiceCommand;
             config.SpeechContexts.Add(context);
         }
 

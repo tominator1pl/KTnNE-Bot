@@ -46,7 +46,6 @@ namespace KTnNE_Bot
         {
             if(key == Keys.X)
             {
-                Console.WriteLine("test");
                 if (!alreadyPressed)
                 {
                     alreadyPressed = true;

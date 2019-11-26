@@ -24,13 +24,13 @@ namespace KTnNE_Bot
         public Interpreter()
         {
             labels = new Dictionary<string, bool>();
-            GoogleSpeech.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb"});
+            GoogleSpeech.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad"});
         }
 
         public static void IdleBomb()
         {
             mode = Modes.start;
-            GoogleSpeech.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb" });
+            GoogleSpeech.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad"});
         }
 
         internal void Interpret(string response)
@@ -48,6 +48,10 @@ namespace KTnNE_Bot
                         case "simple wires":
                             mode = Modes.module;
                             currentModule = new SimpleWires();
+                            break;
+                        case "keypad":
+                            mode = Modes.module;
+                            currentModule = new Keypad();
                             break;
                         case "bomb setup":
                             mode = Modes.module;

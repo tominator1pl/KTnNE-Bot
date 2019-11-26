@@ -129,6 +129,8 @@
     <Compile Include="GoogleSpeech.cs" />
     <Compile Include="Interpreter.cs" />
     <Compile Include="KeyboardHook.cs" />
+    <Compile Include="Keypad.cs" />
+    <Compile Include="ListHelp.cs" />
     <Compile Include="Microphone.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Program.cs" />

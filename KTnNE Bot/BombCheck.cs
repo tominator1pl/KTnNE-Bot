@@ -16,7 +16,11 @@ namespace KTnNE_Bot
         }
         public override void Interpret(string text)
         {
-            if (serialnumber) SerialNumber(text);
+            if (serialnumber)
+            {
+                SerialNumber(text);
+                return;
+            }
             if(new List<string> { "snd", "clr", "car", "ind", "frq", "sig", "nsa", "msa", "trn", "bob", "frk" }.Any(text.Contains))
             {
                 if (text.Split(' ')[1] == "off" || text.Split(' ')[1] == "of")
