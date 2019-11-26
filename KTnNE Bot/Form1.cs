@@ -36,16 +36,17 @@ namespace KTnNE_Bot
             speech = new GoogleSpeech();
             interpreter = new Interpreter();
 
-            var keybaordHook = new KeyboardHook(true);
-            keybaordHook.KeyDown += HotKeyManager_HotKeyPressed;
-            keybaordHook.KeyUp += HotKeyManager_HotKeyReleased;
+            var keybaordHook = new KeyboardHook();
+            keybaordHook.OnKeyPressed += HotKeyManager_HotKeyPressed;
+            keybaordHook.OnKeyUnpressed += HotKeyManager_HotKeyReleased;
         }
 
 
-        private void HotKeyManager_HotKeyPressed(Keys key, bool Shift, bool Ctrl, bool Alt)
+        private void HotKeyManager_HotKeyPressed(object sender, Keys key)
         {
-            if(key == Keys.LControlKey)
+            if(key == Keys.X)
             {
+                Console.WriteLine("test");
                 if (!alreadyPressed)
                 {
                     alreadyPressed = true;
@@ -57,10 +58,11 @@ namespace KTnNE_Bot
             }
         }
 
-        private void HotKeyManager_HotKeyReleased(Keys key, bool Shift, bool Ctrl, bool Alt)
+        private void HotKeyManager_HotKeyReleased(object sender, Keys key)
         {
-            if (key == Keys.LControlKey)
+            if (key == Keys.X)
             {
+                mic.StopRecording();
                 alreadyPressed = false;
                 string response = speech.Recognize();
                 richTextBox1.Text += response;

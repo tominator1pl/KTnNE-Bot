@@ -1,193 +1,65 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
-public class KeyboardHook : IDisposable
+class KeyboardHook
 {
-    bool Global = false;
+    private const int WH_KEYBOARD_LL = 13;
+    private const int WM_KEYDOWN = 0x0100;
+    private const int WM_KEYUP = 0x101;
+    private static LowLevelKeyboardProc _proc;
+    private IntPtr _hookID = IntPtr.Zero;
 
-    public delegate void LocalKeyEventHandler(Keys key, bool Shift, bool Ctrl, bool Alt);
-    public event LocalKeyEventHandler KeyDown;
-    public event LocalKeyEventHandler KeyUp;
-
-    public delegate int CallbackDelegate(int Code, int W, int L);
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct KBDLLHookStruct
+    public KeyboardHook()
     {
-        public Int32 vkCode;
-        public Int32 scanCode;
-        public Int32 flags;
-        public Int32 time;
-        public Int32 dwExtraInfo;
+        _proc = HookCallback;
+        _hookID = SetHook(_proc);
+        //UnhookWindowsHookEx(_hookID);
     }
 
-    [DllImport("user32", CallingConvention = CallingConvention.StdCall)]
-    private static extern int SetWindowsHookEx(HookType idHook, CallbackDelegate lpfn, int hInstance, int threadId);
+    public event EventHandler<Keys> OnKeyPressed;
+    public event EventHandler<Keys> OnKeyUnpressed;
 
-    [DllImport("user32", CallingConvention = CallingConvention.StdCall)]
-    private static extern bool UnhookWindowsHookEx(int idHook);
-
-    [DllImport("user32", CallingConvention = CallingConvention.StdCall)]
-    private static extern int CallNextHookEx(int idHook, int nCode, int wParam, int lParam);
-
-    [DllImport("kernel32.dll", CallingConvention = CallingConvention.StdCall)]
-    private static extern int GetCurrentThreadId();
-
-    public enum HookType : int
+    private IntPtr SetHook(LowLevelKeyboardProc proc)
     {
-        WH_JOURNALRECORD = 0,
-        WH_JOURNALPLAYBACK = 1,
-        WH_KEYBOARD = 2,
-        WH_GETMESSAGE = 3,
-        WH_CALLWNDPROC = 4,
-        WH_CBT = 5,
-        WH_SYSMSGFILTER = 6,
-        WH_MOUSE = 7,
-        WH_HARDWARE = 8,
-        WH_DEBUG = 9,
-        WH_SHELL = 10,
-        WH_FOREGROUNDIDLE = 11,
-        WH_CALLWNDPROCRET = 12,
-        WH_KEYBOARD_LL = 13,
-        WH_MOUSE_LL = 14
-    }
-
-    private int HookID = 0;
-    CallbackDelegate TheHookCB = null;
-
-    //Start hook
-    public KeyboardHook(bool Global)
-    {
-        this.Global = Global;
-        TheHookCB = new CallbackDelegate(KeybHookProc);
-        if (Global)
+        using (Process curProcess = Process.GetCurrentProcess())
+        using (ProcessModule curModule = curProcess.MainModule)
         {
-            HookID = SetWindowsHookEx(HookType.WH_KEYBOARD_LL, TheHookCB,
-                0, //0 for local hook. eller hwnd til user32 for global
-                0); //0 for global hook. eller thread for hooken
-        }
-        else
-        {
-            HookID = SetWindowsHookEx(HookType.WH_KEYBOARD, TheHookCB,
-                0, //0 for local hook. or hwnd to user32 for global
-                GetCurrentThreadId()); //0 for global hook. or thread for the hook
+            return SetWindowsHookEx(WH_KEYBOARD_LL, proc,
+                GetModuleHandle(curModule.ModuleName), 0);
         }
     }
 
-    bool IsFinalized = false;
-    ~KeyboardHook()
+    private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+
+    private  IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
     {
-        if (!IsFinalized)
+        if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
         {
-            UnhookWindowsHookEx(HookID);
-            IsFinalized = true;
-        }
-    }
-    public void Dispose()
-    {
-        if (!IsFinalized)
-        {
-            UnhookWindowsHookEx(HookID);
-            IsFinalized = true;
-        }
-    }
+            int vkCode = Marshal.ReadInt32(lParam);
+            OnKeyPressed.Invoke(this, ((Keys)vkCode));
 
-    //The listener that will trigger events
-    private int KeybHookProc(int Code, int W, int L)
-    {
-        KBDLLHookStruct LS = new KBDLLHookStruct();
-        if (Code < 0)
-        {
-            return CallNextHookEx(HookID, Code, W, L);
         }
-        try
+        else if (nCode >= 0 && wParam == (IntPtr)WM_KEYUP)
         {
-            if (!Global)
-            {
-                if (Code == 3)
-                {
-                    IntPtr ptr = IntPtr.Zero;
-
-                    int keydownup = L >> 30;
-                    if (keydownup == 0)
-                    {
-                        if (KeyDown != null) KeyDown((Keys)W, GetShiftPressed(), GetCtrlPressed(), GetAltPressed());
-                    }
-                    if (keydownup == -1)
-                    {
-                        if (KeyUp != null) KeyUp((Keys)W, GetShiftPressed(), GetCtrlPressed(), GetAltPressed());
-                    }
-                    //System.Diagnostics.Debug.WriteLine("Down: " + (Keys)W);
-                }
-            }
-            else
-            {
-                KeyEvents kEvent = (KeyEvents)W;
-
-                Int32 vkCode = Marshal.ReadInt32((IntPtr)L); //Leser vkCode som er de første 32 bits hvor L peker.
-
-                if (kEvent != KeyEvents.KeyDown && kEvent != KeyEvents.KeyUp && kEvent != KeyEvents.SKeyDown && kEvent != KeyEvents.SKeyUp)
-                {
-                }
-                if (kEvent == KeyEvents.KeyDown || kEvent == KeyEvents.SKeyDown)
-                {
-                    if (KeyDown != null) KeyDown((Keys)vkCode, GetShiftPressed(), GetCtrlPressed(), GetAltPressed());
-                }
-                if (kEvent == KeyEvents.KeyUp || kEvent == KeyEvents.SKeyUp)
-                {
-                    if (KeyUp != null) KeyUp((Keys)vkCode, GetShiftPressed(), GetCtrlPressed(), GetAltPressed());
-                }
-            }
-        }
-        catch (Exception)
-        {
-            //Ignore all errors...
+            int vkCode = Marshal.ReadInt32(lParam);
+            OnKeyUnpressed.Invoke(this, ((Keys)vkCode));
         }
 
-        return CallNextHookEx(HookID, Code, W, L);
-
+        return CallNextHookEx(_hookID, nCode, wParam, lParam);
     }
 
-    public enum KeyEvents
-    {
-        KeyDown = 0x0100,
-        KeyUp = 0x0101,
-        SKeyDown = 0x0104,
-        SKeyUp = 0x0105
-    }
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
-    [DllImport("user32.dll")]
-    static public extern short GetKeyState(System.Windows.Forms.Keys nVirtKey);
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
-    public static bool GetCapslock()
-    {
-        return Convert.ToBoolean(GetKeyState(System.Windows.Forms.Keys.CapsLock)) & true;
-    }
-    public static bool GetNumlock()
-    {
-        return Convert.ToBoolean(GetKeyState(System.Windows.Forms.Keys.NumLock)) & true;
-    }
-    public static bool GetScrollLock()
-    {
-        return Convert.ToBoolean(GetKeyState(System.Windows.Forms.Keys.Scroll)) & true;
-    }
-    public static bool GetShiftPressed()
-    {
-        int state = GetKeyState(System.Windows.Forms.Keys.ShiftKey);
-        if (state > 1 || state < -1) return true;
-        return false;
-    }
-    public static bool GetCtrlPressed()
-    {
-        int state = GetKeyState(System.Windows.Forms.Keys.ControlKey);
-        if (state > 1 || state < -1) return true;
-        return false;
-    }
-    public static bool GetAltPressed()
-    {
-        int state = GetKeyState(System.Windows.Forms.Keys.Menu);
-        if (state > 1 || state < -1) return true;
-        return false;
-    }
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr GetModuleHandle(string lpModuleName);
 }

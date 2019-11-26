@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Google.Cloud.Speech.V1.RecognitionConfig.Types;
@@ -18,6 +19,7 @@ namespace KTnNE_Bot
         static RecognitionConfig config;
         public static List<byte> longerAudioList;
         static SpeechContext context;
+        public static bool working = false;
 
         public GoogleSpeech()
         {
@@ -32,7 +34,7 @@ namespace KTnNE_Bot
                 Encoding = AudioEncoding.Linear16,
                 SampleRateHertz = 16000,
                 LanguageCode = LanguageCodes.English.UnitedStates,
-                Model = "command_and_search",
+                Model = "command_and_search"
             };
             config.SpeechContexts.Add(context);
         }
@@ -47,6 +49,8 @@ namespace KTnNE_Bot
 
         public string Recognize()
         {
+
+            if (longerAudioList.Count == 0) return "ERROR";
             RecognitionAudio audio5 = RecognitionAudio.FromBytes(longerAudioList.ToArray());
             RecognizeResponse response = client.Recognize(config, audio5);
             Console.WriteLine(response);

@@ -37,7 +37,7 @@ namespace KTnNE_Bot
 
         public void Close()
         {
-            waveIn.StartRecording();
+            waveIn.StopRecording();
             waveIn.Dispose();
         }
     }

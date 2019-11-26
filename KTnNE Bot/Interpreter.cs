@@ -8,8 +8,10 @@ namespace KTnNE_Bot
 {
     class Interpreter
     {
-        Modes mode = Modes.start;
+        public static Modes mode = Modes.start;
         Module currentModule;
+        public static Dictionary<string, bool> labels;
+        public static int batteries = 0;
 
         public enum Modes {
             start = 0,
@@ -20,7 +22,14 @@ namespace KTnNE_Bot
 
         public Interpreter()
         {
-            GoogleSpeech.SetContext(new List<string>{"simple button","simple wires"});
+            labels = new Dictionary<string, bool>();
+            GoogleSpeech.SetContext(new List<string>{"simple button","simple wires","bomb check", "new bomb"});
+        }
+
+        public static void IdleBomb()
+        {
+            mode = Modes.start;
+            GoogleSpeech.SetContext(new List<string> { "simple button", "simple wires", "bomb check", "new bomb" });
         }
 
         internal void Interpret(string response)
@@ -28,13 +37,24 @@ namespace KTnNE_Bot
             switch (mode)
             {
                 case Modes.start:
-                    switch (response)
+                    switch (response.ToLower())
                     {
                         case "simple button":
+                            mode = Modes.module;
                             currentModule = new SimpleButton();
                             break;
                         case "simple wires":
                             TextSynthesizer.Speak("wires ok");
+                            break;
+                        case "bomb check":
+                            mode = Modes.module;
+                            currentModule = new BombCheck();
+                            break;
+                        case "new bomb":
+                            mode = Modes.start;
+                            labels = new Dictionary<string, bool>();
+                            batteries = 0;
+                            TextSynthesizer.Speak("new bomb");
                             break;
                         default:
                             TextSynthesizer.Speak("Again");
