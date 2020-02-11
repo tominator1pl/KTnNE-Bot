@@ -55,5 +55,10 @@ namespace KTnNE_Bot
             }
             return fixedSerial;
         }
+
+        public static bool isSerialLastEven()
+        {
+            return !(int.Parse(Interpreter.serialNumber[5].ToString()) % 2 == 1);
+        }
     }
 }

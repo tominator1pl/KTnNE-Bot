@@ -11,7 +11,7 @@ namespace KTnNE_Bot
         bool serialnumber = false;
         public BombCheck()
         {
-            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind","frq","sig","nsa","msa","trn","bob","frk","on","off","batteries","zero", "one","two","more", "finish", "number" },1,2);
+            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind","frq","sig","nsa","msa","trn","bob","frk","on","off","batteries","zero", "one","two","more", "finish", "number", "para" },1,2);
             TextSynthesizer.Speak("bomb setup ok");
         }
         public override void Interpret(string text)
@@ -70,6 +70,12 @@ namespace KTnNE_Bot
                 serialnumber = true;
             }
             else
+            if (text.Contains("para"))
+            {
+                Interpreter.parraler = true;
+                TextSynthesizer.Speak("parallel port on");
+            }
+            else
             if (text.Contains("finish"))
             {
                 Interpreter.IdleBomb();
@@ -105,7 +111,7 @@ namespace KTnNE_Bot
             }
             TextSynthesizer.Speak(Converter.ToNATO(serial));
             Interpreter.serialNumber = serial;
-            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind", "frq", "sig", "nsa", "msa", "trn", "bob", "frk", "on", "off", "batteries", "zero", "one", "two", "more", "finish", "number" }, 1, 2);
+            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind", "frq", "sig", "nsa", "msa", "trn", "bob", "frk", "on", "off", "batteries", "zero", "one", "two", "more", "finish", "number", "para" }, 1, 2);
             serialnumber = false;
         }
     }

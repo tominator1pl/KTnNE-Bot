@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BombCheck.cs" />
+    <Compile Include="ComplicatedWires.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

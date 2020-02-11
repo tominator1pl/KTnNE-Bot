@@ -71,7 +71,7 @@ namespace KTnNE_Bot
 
         private void FourWires()
         {
-            if(colors.Count(x => x.Contains("red")) > 1 && (int.Parse(Interpreter.serialNumber[5].ToString()) % 2 == 1)) //more than one red and if last(5) digit of sn is odd
+            if(colors.Count(x => x.Contains("red")) > 1 && (!Converter.isSerialLastEven())) //more than one red and if last(5) digit of sn is odd
             {
                 int num = (colors.LastIndexOf("red") + 1);
                 TextSynthesizer.Speak(num.ToOrdinalWords() + " wire");
