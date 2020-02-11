@@ -11,7 +11,7 @@ namespace KTnNE_Bot
         bool serialnumber = false;
         public BombCheck()
         {
-            GoogleSpeech.SetContext(new List<string> { "snd", "clr", "car", "ind","frq","sig","nsa","msa","trn","bob","frk","on","off","batteries","zero", "one","two","more", "finish", "serial number" });
+            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind","frq","sig","nsa","msa","trn","bob","frk","on","off","batteries","zero", "one","two","more", "finish", "serial number" });
             TextSynthesizer.Speak("bomb setup ok");
         }
         public override void Interpret(string text)
@@ -66,7 +66,7 @@ namespace KTnNE_Bot
             }else if(text.Contains("serial number"))
             {
                 TextSynthesizer.Speak("serial number ok");
-                GoogleSpeech.SetContext(new List<string> { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "zero", "alfa", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliet", "kilo", "lima", "mike", "november", "oscar", "papa", "quebec", "romeo", "sierra", "tango", "uni", "victor", "whiskey", "x-ray", "yankee", "zulu" });
+                Recognizer.SetContext(new List<string> { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "zero", "alfa", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliet", "kilo", "lima", "mike", "november", "oscar", "papa", "quebec", "romeo", "sierra", "tango", "uni", "victor", "whiskey", "x-ray", "yankee", "zulu" });
                 serialnumber = true;
             }
             else
@@ -105,6 +105,7 @@ namespace KTnNE_Bot
             }
             TextSynthesizer.Speak(string.Join(" ", serial.Split()));
             Interpreter.serialNumber = serial;
+            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind", "frq", "sig", "nsa", "msa", "trn", "bob", "frk", "on", "off", "batteries", "zero", "one", "two", "more", "finish", "serial number" });
             serialnumber = false;
         }
     }

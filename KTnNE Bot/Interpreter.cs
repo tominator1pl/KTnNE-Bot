@@ -24,13 +24,13 @@ namespace KTnNE_Bot
         public Interpreter()
         {
             labels = new Dictionary<string, bool>();
-            GoogleSpeech.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad"});
+            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad"});
         }
 
         public static void IdleBomb()
         {
             mode = Modes.start;
-            GoogleSpeech.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad"});
+            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad"});
         }
 
         internal void Interpret(string response)

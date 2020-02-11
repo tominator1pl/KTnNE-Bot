@@ -24,7 +24,7 @@ namespace KTnNE_Bot
         bool alreadyPressed = false;
         Microphone mic;
         TextSynthesizer syn;
-        GoogleSpeech speech;
+        Recognizer speech;
         Interpreter interpreter;
 
         public Form1()
@@ -33,7 +33,7 @@ namespace KTnNE_Bot
             form = this;
             mic = new Microphone();
             syn = new TextSynthesizer();
-            speech = new GoogleSpeech();
+            speech = new Recognizer();
             interpreter = new Interpreter();
 
             var keybaordHook = new KeyboardHook();
@@ -49,7 +49,7 @@ namespace KTnNE_Bot
                 if (!alreadyPressed)
                 {
                     alreadyPressed = true;
-                    GoogleSpeech.longerAudioList = new List<byte>();
+                    Recognizer.longerAudioList = new List<byte>();
                     richTextBox1.Text += "Start ";
                     mic.StartRecording();
                     
@@ -83,7 +83,7 @@ namespace KTnNE_Bot
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-            GoogleSpeech.longerAudioList = new List<byte>();
+            Recognizer.longerAudioList = new List<byte>();
             mic.StartRecording();
             richTextBox1.Text += "Start";
         }
@@ -93,8 +93,8 @@ namespace KTnNE_Bot
             
             mic.StopRecording();
             richTextBox1.Text += "Stop";
-            GoogleSpeech.longerAudioList.Clear();
-            GoogleSpeech.longerAudioList = null;
+            Recognizer.longerAudioList.Clear();
+            Recognizer.longerAudioList = null;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -106,6 +106,12 @@ namespace KTnNE_Bot
         {
             syn.Close();
             mic.Close();
+            WindowsSpeech.Close();
+        }
+
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Recognizer.recognizer = comboBox1.SelectedIndex;
         }
     }
 }

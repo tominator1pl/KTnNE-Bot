@@ -12,14 +12,13 @@ using static Google.Cloud.Speech.V1.RecognitionConfig.Types;
 
 namespace KTnNE_Bot
 {
-    class GoogleSpeech
+    class GoogleSpeech 
     {
 
         SpeechClient client;
         static RecognitionConfig config;
-        public static List<byte> longerAudioList;
         static SpeechContext context;
-        public static bool working = false;
+        
 
         public GoogleSpeech()
         {
@@ -51,11 +50,11 @@ namespace KTnNE_Bot
 
         public string Recognize()
         {
-            if (longerAudioList.Count < 3200) return "ERROR";
-            RecognitionAudio audio5 = RecognitionAudio.FromBytes(longerAudioList.ToArray());
+            if (Recognizer.longerAudioList.Count < 3200) return "ERROR";
+            RecognitionAudio audio5 = RecognitionAudio.FromBytes(Recognizer.longerAudioList.ToArray());
             RecognizeResponse response = client.Recognize(config, audio5);
             Console.WriteLine(response);
-            longerAudioList.Clear();
+            Recognizer.longerAudioList.Clear();
 
             try
             {

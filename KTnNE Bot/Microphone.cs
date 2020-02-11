@@ -32,7 +32,7 @@ namespace KTnNE_Bot
 
         private void WaveInDataAv(object s, WaveInEventArgs a)
         {
-            GoogleSpeech.longerAudioList.AddRange(a.Buffer);
+            Recognizer.longerAudioList.AddRange(a.Buffer);
         }
 
         public void Close()

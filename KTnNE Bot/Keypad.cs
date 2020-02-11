@@ -11,7 +11,7 @@ namespace KTnNE_Bot
         {
             columns = new Dictionary<int, List<string>>();
             TextSynthesizer.Speak("keypad ok sequence"); //sequence check keypad chars.png
-            GoogleSpeech.SetContext(new List<string> { "quebec", "alfa", "alpha", "lamp", "potter", "aliens", "hotel","delta","echo","six","papa","wave","empty","full","question","copy","whiskey","bravo","x-ray","romeo","face","three","free","charlie","puzzle","letter","candle","november","omega" });
+            Recognizer.SetContext(new List<string> { "quebec", "alfa", "alpha", "lamp", "potter", "aliens", "hotel","delta","echo","six","papa","wave","empty","full","question","copy","whiskey","bravo","x-ray","romeo","face","three","free","charlie","puzzle","letter","candle","november","omega" });
 
             columns[0] = new List<string> { "quebec", "alfa", "lamp", "potter", "aliens", "hotel", "delta" };
             columns[1] = new List<string> { "echo", "quebec", "delta", "wave", "empty", "hotel", "question" };
