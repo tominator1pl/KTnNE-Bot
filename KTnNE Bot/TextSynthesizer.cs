@@ -23,6 +23,11 @@ namespace KTnNE_Bot
             synthesizer.SpeakAsync(text);
         }
 
+        public static void Stop()
+        {
+            synthesizer.SpeakAsyncCancelAll();
+        }
+
         public void Close()
         {
             synthesizer.Dispose();

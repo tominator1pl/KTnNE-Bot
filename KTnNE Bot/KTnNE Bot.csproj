@@ -140,6 +140,7 @@
     <Compile Include="SimpleButton.cs" />
     <Compile Include="SimpleWires.cs" />
     <Compile Include="TextSynthesizer.cs" />
+    <Compile Include="WhoFirst.cs" />
     <Compile Include="WindowsSpeech.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

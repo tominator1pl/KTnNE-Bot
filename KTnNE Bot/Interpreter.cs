@@ -25,18 +25,23 @@ namespace KTnNE_Bot
         public Interpreter()
         {
             labels = new Dictionary<string, bool>();
-            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad", "simon says"},1,1);
+            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad", "simon says", "first" },1,1);
         }
 
         public static void IdleBomb()
         {
             mode = Modes.start;
-            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad", "simon says" }, 1, 1);
+            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad", "simon says", "first" }, 1, 1);
         }
 
         internal void Interpret(string response)
         {
             response = response.ToLower();
+            if (response == "stop")
+            {
+                TextSynthesizer.Stop();
+                return;
+            }
             if(response == "strike")
             {
                 strikes++;
@@ -73,10 +78,16 @@ namespace KTnNE_Bot
                             mode = Modes.module;
                             currentModule = new BombCheck();
                             break;
+                        case "first":
+                            mode = Modes.module;
+                            currentModule = new WhoFirst();
+                            break;
                         case "new bomb":
                             mode = Modes.start;
                             labels = new Dictionary<string, bool>();
                             batteries = 0;
+                            strikes = 0;
+                            serialNumber = "";
                             TextSynthesizer.Speak("new bomb");
                             break;
                         default:

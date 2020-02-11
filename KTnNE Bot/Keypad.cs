@@ -52,10 +52,10 @@ namespace KTnNE_Bot
             string finished = "";
             foreach(KeyValuePair<int,string> letter in ordered)
             {
-                //finished += letter.Value;
-                TextSynthesizer.Speak(letter.Value);
+                finished += letter.Value + ", ";
+                //TextSynthesizer.Speak(letter.Value);
             }
-            //TextSynthesizer.Speak(finished);
+            TextSynthesizer.Speak(finished);
             Interpreter.IdleBomb();
         }
     }

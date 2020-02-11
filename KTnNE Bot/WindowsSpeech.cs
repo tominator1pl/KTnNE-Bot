@@ -43,7 +43,7 @@ namespace KTnNE_Bot
             GrammarBuilder grammarBuilder = new GrammarBuilder(new Choices(contexts.ToArray()));
             Grammar grammar = new Grammar(new GrammarBuilder(grammarBuilder,min,max));
             speechRecognizer.LoadGrammar(grammar);
-            Grammar grammar1 = new Grammar(new GrammarBuilder("strike"));
+            Grammar grammar1 = new Grammar(new GrammarBuilder(new Choices(new string[] { "strike","stop"})));
             speechRecognizer.LoadGrammar(grammar1);
         }
         public string Recognize()
