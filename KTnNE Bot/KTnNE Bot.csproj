@@ -139,6 +139,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recognizer.cs" />
+    <Compile Include="SequentialWires.cs" />
     <Compile Include="SimonSays.cs" />
     <Compile Include="SimpleButton.cs" />
     <Compile Include="SimpleWires.cs" />

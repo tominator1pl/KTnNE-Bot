@@ -26,13 +26,13 @@ namespace KTnNE_Bot
         public Interpreter()
         {
             labels = new Dictionary<string, bool>();
-            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad", "simon says", "first", "memory", "morse", "complicated wires" },1,1);
+            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad", "simon says", "first", "memory", "morse", "complicated wires", "sequential wires" },1,1);
         }
 
         public static void IdleBomb()
         {
             mode = Modes.start;
-            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad", "simon says", "first", "memory", "morse", "complicated wires" }, 1, 1);
+            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad", "simon says", "first", "memory", "morse", "complicated wires", "sequential wires" }, 1, 1);
         }
 
         internal void Interpret(string response)
@@ -100,6 +100,10 @@ namespace KTnNE_Bot
                         case "complicated wires":
                             mode = Modes.module;
                             currentModule = new ComplicatedWires();
+                            break;
+                        case "sequential wires":
+                            mode = Modes.module;
+                            currentModule = new SequentialWires();
                             break;
                         case "new bomb":
                             mode = Modes.start;
