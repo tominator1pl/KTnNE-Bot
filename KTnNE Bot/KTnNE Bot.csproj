@@ -134,6 +134,7 @@
     <Compile Include="MemoryModule.cs" />
     <Compile Include="Microphone.cs" />
     <Compile Include="Module.cs" />
+    <Compile Include="MorseModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recognizer.cs" />
