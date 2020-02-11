@@ -25,13 +25,13 @@ namespace KTnNE_Bot
         public Interpreter()
         {
             labels = new Dictionary<string, bool>();
-            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad", "simon says", "first" },1,1);
+            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad", "simon says", "first", "memory" },1,1);
         }
 
         public static void IdleBomb()
         {
             mode = Modes.start;
-            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad", "simon says", "first" }, 1, 1);
+            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad", "simon says", "first", "memory" }, 1, 1);
         }
 
         internal void Interpret(string response)
@@ -81,6 +81,10 @@ namespace KTnNE_Bot
                         case "first":
                             mode = Modes.module;
                             currentModule = new WhoFirst();
+                            break;
+                        case "memory":
+                            mode = Modes.module;
+                            currentModule = new MemoryModule();
                             break;
                         case "new bomb":
                             mode = Modes.start;
