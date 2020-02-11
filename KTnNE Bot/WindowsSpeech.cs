@@ -37,16 +37,27 @@ namespace KTnNE_Bot
             }
         }
 
-        public static void SetContext(List<string> contexts)
+        public static void SetContext(List<string> contexts, int min, int max)
         {
             speechRecognizer.UnloadAllGrammars();
             GrammarBuilder grammarBuilder = new GrammarBuilder(new Choices(contexts.ToArray()));
-            Grammar grammar = new Grammar(new GrammarBuilder(grammarBuilder,1,10));
+            Grammar grammar = new Grammar(new GrammarBuilder(grammarBuilder,min,max));
             speechRecognizer.LoadGrammar(grammar);
+            Grammar grammar1 = new Grammar(new GrammarBuilder("strike"));
+            speechRecognizer.LoadGrammar(grammar1);
         }
         public string Recognize()
         {
-            Stream stream = new MemoryStream(Recognizer.longerAudioList.ToArray());
+            Stream stream;
+            try
+            {
+                stream = new MemoryStream(Recognizer.longerAudioList.ToArray());
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            
             speechRecognizer.SetInputToAudioStream(stream, formatInfo);
             RecognitionResult res = speechRecognizer.Recognize();
             try

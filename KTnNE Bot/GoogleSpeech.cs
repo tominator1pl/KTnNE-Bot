@@ -45,6 +45,7 @@ namespace KTnNE_Bot
             context.Phrases.Clear();
             config.SpeechContexts.Clear();
             context.Phrases.AddRange(contexts);
+            context.Phrases.Add("strike");
             config.SpeechContexts.Add(context);
         }
 

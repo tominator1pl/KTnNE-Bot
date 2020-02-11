@@ -14,7 +14,7 @@ namespace KTnNE_Bot
         public SimpleWires()
         {
             TextSynthesizer.Speak("wires ok sequence");
-            Recognizer.SetContext(new List<string> { "blue", "red", "yellow", "white", "black"});
+            Recognizer.SetContext(new List<string> { "blue", "red", "yellow", "white", "black"}, 3,6);
         }
         public override void Interpret(string text)
         {

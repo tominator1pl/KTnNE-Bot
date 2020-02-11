@@ -16,7 +16,7 @@ namespace KTnNE_Bot
         public SimpleButton()
         {
             TextSynthesizer.Speak("button ok color");
-            Recognizer.SetContext(new List<string> { "blue", "red", "yellow", "white", "abort", "hold", "detonate", "press" });
+            Recognizer.SetContext(new List<string> { "blue", "red", "yellow", "white", "abort", "hold", "detonate", "press" },1,1);
             colorlabel = true;
             colorb = true;
         }

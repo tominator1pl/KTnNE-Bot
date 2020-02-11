@@ -11,7 +11,7 @@ namespace KTnNE_Bot
         bool serialnumber = false;
         public BombCheck()
         {
-            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind","frq","sig","nsa","msa","trn","bob","frk","on","off","batteries","zero", "one","two","more", "finish", "serial number" });
+            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind","frq","sig","nsa","msa","trn","bob","frk","on","off","batteries","zero", "one","two","more", "finish", "number" },1,2);
             TextSynthesizer.Speak("bomb setup ok");
         }
         public override void Interpret(string text)
@@ -21,7 +21,7 @@ namespace KTnNE_Bot
                 SerialNumber(text);
                 return;
             }
-            if(new List<string> { "snd", "clr", "car", "ind", "frq", "sig", "nsa", "msa", "trn", "bob", "frk" }.Any(text.Contains))
+            if(new List<string> { "snd", "clr", "car", "ind", "frq", "sig", "nsa", "msa", "trn", "bob", "frk" }.Any(text.Contains) && new List<string> { "on", "off", "of" }.Any(text.Contains))
             {
                 if (text.Split(' ')[1] == "off" || text.Split(' ')[1] == "of")
                 {
@@ -63,10 +63,10 @@ namespace KTnNE_Bot
                         break;
                 }
                 TextSynthesizer.Speak("batteries "+ Interpreter.batteries);
-            }else if(text.Contains("serial number"))
+            }else if(text.Contains("number"))
             {
                 TextSynthesizer.Speak("serial number ok");
-                Recognizer.SetContext(new List<string> { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "zero", "alfa", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliet", "kilo", "lima", "mike", "november", "oscar", "papa", "quebec", "romeo", "sierra", "tango", "uni", "victor", "whiskey", "x-ray", "yankee", "zulu" });
+                Recognizer.SetContext(new List<string> { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "zero", "alfa", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliet", "kilo", "lima", "mike", "november", "oscar", "papa", "quebec", "romeo", "sierra", "tango", "uniform", "victor", "whiskey", "x-ray", "yankee", "zulu" }, 6, 6);
                 serialnumber = true;
             }
             else
@@ -103,9 +103,9 @@ namespace KTnNE_Bot
                 TextSynthesizer.Speak("again");
                 return;
             }
-            TextSynthesizer.Speak(string.Join(" ", serial.Split()));
+            TextSynthesizer.Speak(Converter.ToNATO(serial));
             Interpreter.serialNumber = serial;
-            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind", "frq", "sig", "nsa", "msa", "trn", "bob", "frk", "on", "off", "batteries", "zero", "one", "two", "more", "finish", "serial number" });
+            Recognizer.SetContext(new List<string> { "snd", "clr", "car", "ind", "frq", "sig", "nsa", "msa", "trn", "bob", "frk", "on", "off", "batteries", "zero", "one", "two", "more", "finish", "number" }, 1, 2);
             serialnumber = false;
         }
     }

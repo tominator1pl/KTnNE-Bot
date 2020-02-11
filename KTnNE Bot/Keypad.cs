@@ -11,7 +11,7 @@ namespace KTnNE_Bot
         {
             columns = new Dictionary<int, List<string>>();
             TextSynthesizer.Speak("keypad ok sequence"); //sequence check keypad chars.png
-            Recognizer.SetContext(new List<string> { "quebec", "alfa", "alpha", "lamp", "potter", "aliens", "hotel","delta","echo","six","papa","wave","empty","full","question","copy","whiskey","bravo","x-ray","romeo","face","three","free","charlie","puzzle","letter","candle","november","omega" });
+            Recognizer.SetContext(new List<string> { "quebec", "alfa", "alpha", "lamp", "potter", "aliens", "hotel","delta","echo","six","papa","wave","empty","full","question","copy","whiskey","bravo","x-ray","romeo","face","three","free","charlie","puzzle","letter","candle","november","omega" },4,4);
 
             columns[0] = new List<string> { "quebec", "alfa", "lamp", "potter", "aliens", "hotel", "delta" };
             columns[1] = new List<string> { "echo", "quebec", "delta", "wave", "empty", "hotel", "question" };
@@ -52,9 +52,10 @@ namespace KTnNE_Bot
             string finished = "";
             foreach(KeyValuePair<int,string> letter in ordered)
             {
-                finished += letter.Value + " ";
+                //finished += letter.Value;
+                TextSynthesizer.Speak(letter.Value);
             }
-            TextSynthesizer.Speak(finished);
+            //TextSynthesizer.Speak(finished);
             Interpreter.IdleBomb();
         }
     }

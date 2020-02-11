@@ -13,6 +13,7 @@ namespace KTnNE_Bot
         public static Dictionary<string, bool> labels;
         public static int batteries = 0;
         public static string serialNumber;
+        public static int strikes = 0;
 
         public enum Modes {
             start = 0,
@@ -24,18 +25,29 @@ namespace KTnNE_Bot
         public Interpreter()
         {
             labels = new Dictionary<string, bool>();
-            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad"});
+            Recognizer.SetContext(new List<string>{"simple button","simple wires","bomb setup", "new bomb", "keypad", "simon says"},1,1);
         }
 
         public static void IdleBomb()
         {
             mode = Modes.start;
-            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad"});
+            Recognizer.SetContext(new List<string> { "simple button", "simple wires", "bomb setup", "new bomb", "keypad", "simon says" }, 1, 1);
         }
 
         internal void Interpret(string response)
         {
             response = response.ToLower();
+            if(response == "strike")
+            {
+                strikes++;
+                if(strikes >= 3)
+                {
+                    strikes = 0;
+                    TextSynthesizer.Speak("strikes reset");
+                }
+                TextSynthesizer.Speak(strikes + " strikes");
+                return;
+            }
             switch (mode)
             {
                 case Modes.start:
@@ -52,6 +64,10 @@ namespace KTnNE_Bot
                         case "keypad":
                             mode = Modes.module;
                             currentModule = new Keypad();
+                            break;
+                        case "simon says":
+                            mode = Modes.module;
+                            currentModule = new SimonSays();
                             break;
                         case "bomb setup":
                             mode = Modes.module;

@@ -21,7 +21,7 @@ namespace KTnNE_Bot
         }
 
 
-        public static void SetContext(List<string> contexts)
+        public static void SetContext(List<string> contexts, int min, int max)
         {
             switch (recognizer)
             {
@@ -29,7 +29,7 @@ namespace KTnNE_Bot
                     GoogleSpeech.SetContext(contexts);
                     break;
                 case 1:
-                    WindowsSpeech.SetContext(contexts);
+                    WindowsSpeech.SetContext(contexts, min, max);
                     break;
             }
         }
