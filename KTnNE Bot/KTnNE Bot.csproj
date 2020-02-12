@@ -132,6 +132,7 @@
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="Keypad.cs" />
     <Compile Include="ListHelp.cs" />
+    <Compile Include="Maze.cs" />
     <Compile Include="MemoryModule.cs" />
     <Compile Include="Microphone.cs" />
     <Compile Include="Module.cs" />
